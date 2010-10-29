@@ -1,6 +1,10 @@
 Django Notes
 ============
 
+
+Overview
+--------
+
 Easily add notes and basic reminders to your django apps.
 
 Reminders popup at the bottom of the screen using ajax.
@@ -16,7 +20,7 @@ Instructions
 2. Give your models notes. Example --
 
 	from notes import NotesField
-
+    
 	class MyModel(models.Model):
 		...
 		notes = NotesField()
@@ -25,13 +29,13 @@ Instructions
 3. Show notes in admin (at the bottom). Example --
 
 	from notes import BaseNoteAdmin
-
+    
 	class MyAdmin(BaseNoteAdmin):
 		...
 
 4. Use NoteFormSet in your views. Example --
 
-	formset = NoteFormSet(user=request.user, data=request.POST)
+    formset = NoteFormSet(user=request.user, data=request.POST)
 
 
 Settings
