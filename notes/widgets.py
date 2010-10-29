@@ -1,4 +1,5 @@
 from datetime import date, datetime, time, timedelta
+from django.utils.dateformat import format as date_format, time_format
 from django import forms
 
 class ReminderDateWidget(forms.Select):
@@ -11,7 +12,7 @@ class ReminderDateWidget(forms.Select):
         ]
         for offset in range(2, 15):
             d = date.today() + timedelta(days=offset)
-            choices += [ (d, d.strftime('%d %m %Y')) ]
+            choices += [ (d, date_format(d, 'l jS')) ]
         self.choices = choices
 
 class ReminderTimeWidget(forms.Select):
@@ -19,7 +20,7 @@ class ReminderTimeWidget(forms.Select):
         super(ReminderTimeWidget, self).__init__(attrs=attrs)
         choices = [('', '--------')]
         for hour in range(8, 20):
-            choices += [ (time(hour, 0), '%02d:00' % hour) ]
+            choices += [ (time(hour, 0), time_format(time(hour, 0), 'P')) ]
         self.choices = choices
         
 class ReminderWidget(forms.SplitDateTimeWidget):
@@ -31,3 +32,10 @@ class ReminderWidget(forms.SplitDateTimeWidget):
         # Note that we're calling MultiWidget, not SplitDateTimeWidget, because
         # we want to define widgets.
         forms.MultiWidget.__init__(self, widgets, attrs)
+
+# class ReminderField(forms.DateTimeField):
+#     widget = ReminderWidget
+#     
+#     def clean(self, value):
+#         if value <= datetime.now():
+#             raise forms.ValidationError(

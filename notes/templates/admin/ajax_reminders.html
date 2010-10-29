@@ -1,15 +1,16 @@
 {% if reminders %}
-<ul class="reminders">
+<ul>
   {% for reminder in reminders %}
-    <li class="{% if reminder.expired %}expired{% endif %}">
-      <strongReminder:</strong>
-      <a href="{{ reminder.get_admin_url }}">{{ reminder.content_object }}</a>
+    <li class="{% if reminder.overdue %}overdue{% endif %}">
+      <strong>Reminder: {{ reminder.reminder|date:"P, l jS F" }}</strong>
+      <a href="{{ reminder.get_admin_url }}#note-{{ reminder.id }}">{{ reminder.content_object|truncatewords:5 }}</a>
       <span>{{ reminder }}</span>
       <form name="reminder_{{ reminder.id }}" method="get" action="{% url reminder_action %}">
         <input type="hidden" name="id" value="{{ reminder.id }}" />
         <input type="hidden" name="action" value="snooze" />
         {{ form.snooze }}
-        <a href="javascript:void(0)" onclick="document.forms.reminder_{{ reminder.id }}.submit()">Snooze</button>
+        &nbsp;
+        <a href="javascript:void(0)" onclick="document.forms.reminder_{{ reminder.id }}.submit()">Snooze</a>
         <a href="{% url reminder_action %}?id={{ reminder.id }}&amp;action=dismiss">Dismiss</a>
       </form>
     </li>

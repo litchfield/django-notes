@@ -1,0 +1,48 @@
+#reminders {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+#reminders form {
+  display: inline;
+  padding-left: 20px;
+}
+#reminders select {
+  vertical-align: middle;
+}
+#reminders strong {
+  font-weight: bold;
+}
+#reminders ul {
+  margin: 0;
+  padding: 0;
+}
+#reminders li {
+  border-top: 1px solid red;
+  background: #FFC url(clock-icon.png) no-repeat 12px 6px;
+  padding: 12px 12px 12px 55px;
+  font-size: 12px;
+  margin: 0;
+  list-style: none;
+}
+#reminders li.overdue {
+  border-color: #C00;
+  background-color: red;
+  color: #FFF;
+}
+#reminders li.overdue a {
+  color: #FFF;
+}
+#reminders a {
+  font-weight: bold
+}
+#reminders li.overdue a:hover {
+  color: #FFC;
+}
+#reminders a, span {
+  padding: 0 10px;
+}
+#reminders span {
+  font-style: italic;
+}

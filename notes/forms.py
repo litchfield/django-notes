@@ -4,10 +4,16 @@ from django.forms.models import BaseModelFormSet
 from django.conf import settings
 from django.contrib.contenttypes.generic import generic_inlineformset_factory, BaseGenericInlineFormSet
 from models import Note
-from fields import ReminderWidget
+from widgets import ReminderWidget
 
 class SnoozeForm(forms.Form):
     snooze = forms.DateTimeField(widget=ReminderWidget)
+    
+    def clean_snooze(self):
+        s = self.cleaned_data.get('snooze')
+        if s < datetime.now():
+            raise forms.ValidationError("Date/time is in the past (%s time)" % settings.TIME_ZONE)
+        return s
     
 class ReminderAdminForm(forms.ModelForm):
     class Meta:

@@ -1,6 +1,6 @@
-{# assumes jquery is loaded #}
+<style type="text/css" media="screen">@import url({{ MEDIA_URL }}notes/reminders.css);</style>
 <script type="text/javascript">
-var timer, interval = 1000*60*1; 
+var timer, interval = 1000*60*{{ interval }}; 
 function refreshReminders(slide) {
   $('#reminders').load('{% url ajax_reminders %}', function() {
     $('#reminders select').mousedown(function() {
@@ -10,14 +10,18 @@ function refreshReminders(slide) {
       timer = setInterval(refreshReminders, interval, true);
     });
     if (slide && this.style.display == 'none') {
-      $(this).slideDown();
+      $(this).slideUp();
     } else {
       $(this).show();
     }
+    $('body').css('paddingBottom', $('#reminders').height() + 'px');
   });
 }
 $(function() {
-  $('#header').after('<div id="reminders" style="display:none">{{ initial_html|escapejs }}</div>');
+  $('body').append('<div id="reminders" style="{% if not initial_html %}display:none{% endif %}">{{ initial_html|escapejs }}</div>');
+  $('body').css('paddingBottom', $('#reminders').height() + 'px');
+  {% if interval > 0 %}
   timer = setInterval(refreshReminders, interval, true);
+  {% endif %}
 });
 </script>

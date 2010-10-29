@@ -8,7 +8,7 @@
     {{ form.id }}
     <div class="inline-related" id="note-{{ forloop.counter0 }}"> 
       <h3>
-        <b>Note:</b>&nbsp;
+        <a name="note-{{ form.instance.id }}"></a><b>Note:</b>&nbsp;
         <span class="inline_label">
           {% if form.instance.pk %}{{ form.instance.user }}{% else %}#{{ forloop.counter }}{% endif %}
         </span> 

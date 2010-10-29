@@ -26,6 +26,9 @@ class Note(models.Model):
         ct = ContentType.objects.get_for_model(obj.__class__)
         return ("admin:%s_%s_change" % (ct.app_label, ct.model), [obj.pk])
     
+    def overdue(self):
+        return self.reminder and self.reminder < datetime.now()
+
 class NotesField(generic.GenericRelation):
     def __init__(self, **kwargs):
         super(ModelNotes, self).__init__(Note, **kwargs)
