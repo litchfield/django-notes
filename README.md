@@ -21,23 +21,23 @@ Instructions
 
 2. Give your models notes. Example --
 
-    from notes import NotesField
-    
-    class MyModel(models.Model):
-        ...
-        notes = NotesField()
-        ...
+        from notes import NotesField
+        
+        class MyModel(models.Model):
+            ...
+            notes = NotesField()
+            ...
 
 3. Show notes in admin (at the bottom). Example --
 
-    from notes import BaseNoteAdmin
-    
-    class MyAdmin(BaseNoteAdmin):
-        ...
+        from notes import BaseNoteAdmin
+        
+        class MyAdmin(BaseNoteAdmin):
+            ...
 
 4. Use NoteFormSet in your views. Example --
 
-    formset = NoteFormSet(user=request.user, data=request.POST)
+        formset = NoteFormSet(user=request.user, data=request.POST)
 
 
 Settings
