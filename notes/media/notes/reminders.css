@@ -1,3 +1,14 @@
+#noteformset-group textarea {
+  width: 70%;
+  height: 4em;
+}
+
+#noteformset-group .created strong {
+  font-size: 12px;
+  padding: 3px 0;
+  float: left;
+}
+
 #reminders {
   position: fixed;
   bottom: 0;

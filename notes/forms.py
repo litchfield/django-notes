@@ -31,8 +31,6 @@ class NoteForm(forms.ModelForm):
         }
 
 class LockoutFormSetMixin(object):
-    allow_change_within = getattr(settings, 'NOTES_ALLOW_CHANGE_WITHIN', 30)  # Allow notes to be edited by same user with X minutes
-    
     def __init__(self, user=None, instance=None, **kwargs):
         self.user = user
         super(LockoutFormSetMixin, self).__init__(instance=instance, **kwargs)
@@ -43,7 +41,7 @@ class LockoutFormSetMixin(object):
                 form.can_edit = True
                 continue
             cutoff = datetime.now() - timedelta(minutes=self.allow_change_within)
-            if user.is_superuser or (user == instance.user and instance.created > cutoff):
+            if user.is_superuser or self.allow_change_within == 0 or (user == instance.user and instance.created > cutoff):
                 form.can_delete = True
                 form.can_edit = True
         self.user = user
@@ -56,6 +54,8 @@ class LockoutFormSetMixin(object):
         return obj
     
 class BaseNoteFormSet(LockoutFormSetMixin, BaseGenericInlineFormSet):
+    allow_change_within = getattr(settings, 'NOTES_ALLOW_CHANGE_WITHIN', 30)  # Allow notes to be edited by same user with X minutes
+
     def total_form_count(self):
         self.extra = 0
         if self.user.is_staff:
