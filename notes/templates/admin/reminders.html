@@ -1,0 +1,23 @@
+{# assumes jquery is loaded #}
+<script type="text/javascript">
+var timer, interval = 1000*60*1; 
+function refreshReminders(slide) {
+  $('#reminders').load('{% url ajax_reminders %}', function() {
+    $('#reminders select').mousedown(function() {
+      clearInterval(timer);
+    });
+    $('#reminders select').change(function() {
+      timer = setInterval(refreshReminders, interval, true);
+    });
+    if (slide && this.style.display == 'none') {
+      $(this).slideDown();
+    } else {
+      $(this).show();
+    }
+  });
+}
+$(function() {
+  $('#header').after('<div id="reminders" style="display:none">{{ initial_html|escapejs }}</div>');
+  timer = setInterval(refreshReminders, interval, true);
+});
+</script>

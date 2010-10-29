@@ -1,0 +1,72 @@
+{% extends 'admin/change_form.html' %}
+
+{% block after_related_objects %}
+<div class="inline-group" id="noteformset-group"> 
+  <h2>Notes</h2> 
+  {{ noteformset.management_form }}
+  {% for form in noteformset.forms %}
+    {{ form.id }}
+    <div class="inline-related" id="note-{{ forloop.counter0 }}"> 
+      <h3>
+        <b>Note:</b>&nbsp;
+        <span class="inline_label">
+          {% if form.instance.pk %}{{ form.instance.user }}{% else %}#{{ forloop.counter }}{% endif %}
+        </span> 
+        {% if form.can_delete %}
+        <span class="delete">
+          {{ form.DELETE }} 
+          <label for="id_notes-note-content_type-object_id-{{ forloop.counter0 }}-DELETE" 
+                 class="vCheckboxLabel inline">Delete</label>
+        </span>
+        {% endif %}
+      </h3> 
+      <fieldset class="module aligned "> 
+        {% if form.instance.pk %}
+        <div class="form-row created"> 
+          <div> 
+            <label class="required">Date:</label> 
+            <strong>
+            {{ form.instance.created|date:"j M Y" }} by 
+            {% if request.user == form.instance.user %}
+            you
+            {% else %}
+            {% firstof form.user.first_name form.user.username %}
+            {% endif %}
+            </strong>
+          </div> 
+        </div>
+        {% endif %}
+        {% if form.can_edit %}
+          <div class="form-row {% if form.text.errors %}errors{% endif %} text"> 
+            {{ form.text.errors }}
+            <div> 
+              <label for="id_note-{{ forloop.counter0 }}-text" class="required">Note:</label> 
+              {{ form.text }}
+            </div> 
+          </div>
+          <div class="form-row {% if form.reminder.errors %}errors{% endif %} reminder"> 
+            {{ form.reminder.errors }}
+            <div> 
+              <label for="id_note-{{ forloop.counter0 }}-reminder" class="">Reminder:</label> 
+              {{ form.reminder }}
+            </div> 
+          </div>
+        {% else %}
+          <div class="form-row text"> 
+            <div> 
+              <label class="required">Note:</label> 
+              {{ form.instance.text }}
+            </div> 
+          </div>
+          <div class="form-row reminder"> 
+            <div> 
+              <label for="id_note-{{ forloop.counter0 }}-reminder" class="">Reminder:</label> 
+              {{ form.instance.reminder|date:"j M Y"|default:"None" }}
+            </div> 
+          </div>
+        {% endif %}
+      </fieldset>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
